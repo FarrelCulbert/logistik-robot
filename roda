@@ -1,0 +1,37 @@
+//kanan
+#define pwm1_a 12
+#define dir1_a 13
+#define pwm2_b 10
+#define dir2_b 11
+
+//kiri
+#define pwm1_c 5
+#define dir1_c 4
+#define pwm2_d 7
+#define dir2_d 6
+
+void setup() {
+  pinMode(pwm1_a, OUTPUT);
+  pinMode(dir1_a, OUTPUT);
+  pinMode(pwm2_b, OUTPUT);
+  pinMode(dir2_b, OUTPUT);
+  pinMode(pwm1_c, OUTPUT);
+  pinMode(dir1_c, OUTPUT);
+  pinMode(pwm2_d, OUTPUT);
+  pinMode(dir2_d, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(dir1_a, HIGH);
+  digitalWrite(dir2_b, LOW);
+  analogWrite(pwm1_a, 30); //C
+  analogWrite(pwm2_b, 0); //A
+
+  digitalWrite(dir1_c, HIGH);
+  digitalWrite(dir2_d, LOW);
+  analogWrite(pwm1_c, 30); //B
+  analogWrite(pwm2_d, 0); //D
+  
+
+}
