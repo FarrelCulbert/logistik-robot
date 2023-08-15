@@ -1,0 +1,73 @@
+unsigned long currentMillis;
+unsigned long previousMillis;
+
+// 2,3,
+#define encoder0PinA 18 //ENCODER1
+#define encoder0PinB 19
+
+volatile long encoder0Pos = 0; //ENCODER1
+
+void setup(){
+  pinMode(DIR1, OUTPUT);
+  pinMode(PWM1, OUTPUT);
+
+  pinMode(3, OUTPUT); //PWM PIN
+
+  pinMode(encoder0PinA, INPUT_PULLUP); //ENCODER PIN
+  pinMode(encoder0PinB, INPUT_PULLUP);
+  
+  attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoderA, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(encoder0PinB), doEncoderB, CHANGE);
+
+  Serial.begin(115200);
+}
+
+void loop(){
+    currentMillis = millis();
+
+    if (currentMillis - previousMillis >=10) {
+      previousMillis = currentMillis;
+      
+      Serial.println(encoder0Pos);
+      
+    }
+
+}
+
+void doEncoderA(){
+  if (digitalRead(encoder0PinA) == HIGH ){
+    if (digitalRead(encoder0PinB) == LOW ){
+      encoder0Pos = encoder0Pos + 1;
+    }
+    else {
+      encoder0Pos = encoder0Pos - 1;
+    }
+  }
+  else {
+    if (digitalRead(encoder0PinB) == HIGH ){
+      encoder0Pos = encoder0Pos + 1;
+    }
+    else {
+      encoder0Pos = encoder0Pos - 1;
+    }
+  }
+}
+
+void doEncoderB(){
+  if (digitalRead(encoder0PinB) == HIGH ){
+    if (digitalRead(encoder0PinA) == HIGH){
+      encoder0Pos == encoder0Pos + 1;
+    }
+    else {
+      encoder0Pos = encoder0Pos - 1;
+    }
+  }
+  else {
+    if(digitalRead(encoder0PinA) == LOW){
+      encoder0Pos = encoder0Pos + 1;
+    }
+    else {
+      encoder0Pos = encoder0Pos - 1;
+    }
+  }
+}
