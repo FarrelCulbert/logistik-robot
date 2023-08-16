@@ -1,0 +1,232 @@
+unsigned long currentMillis;
+unsigned long previousMillis;
+
+// 2,3,
+#define encoder0PinA 2 //ENCODER1
+#define encoder0PinB 3
+#define encoder1PinC 20 //ENCODER2
+#define encoder1PinD 21
+#define encoder2PinE 23 //ENCODER3
+#define encoder2PinF 24
+#define encoder3PinG 18 //ENCODER4
+#define encoder3PinH 19
+
+#define DIR1 44 //MotorA
+#define PWM1 45 
+#define DIR2 4 //MotorB
+#define PWM2 5 
+#define DIR3 6 //MotorC
+#define PWM3 7 
+#define DIR4 8 //MotorD
+#define PWM4 9 
+
+
+volatile long encoder0Pos = 0; //ENCODER1
+volatile long encoder1Pos = 0; //ENCODER2
+volatile long encoder2Pos = 0; //ENCODER3
+volatile long encoder3Pos = 0; //ENCODER4
+
+void setup(){
+  pinMode(DIR1, OUTPUT);
+  pinMode(PWM1, OUTPUT);
+  pinMode(DIR2, OUTPUT);
+  pinMode(PWM2, OUTPUT);
+  pinMode(DIR3, OUTPUT);
+  pinMode(PWM3, OUTPUT);
+  pinMode(DIR4, OUTPUT);
+  pinMode(PWM4, OUTPUT);
+
+  pinMode(45, OUTPUT); //PWM1 PIN
+  pinMode(5, OUTPUT); //PWM2 PIN
+  pinMode(7, OUTPUT); //PWM3 PIN
+  pinMode(9, OUTPUT); //PWM4 PIN
+
+  pinMode(encoder0PinA, INPUT_PULLUP); //ENCODER1 PIN
+  pinMode(encoder0PinB, INPUT_PULLUP);
+  pinMode(encoder1PinC, INPUT_PULLUP); //ENCODER2 PIN
+  pinMode(encoder1PinD, INPUT_PULLUP);
+  pinMode(encoder2PinE, INPUT_PULLUP); //ENCODER3 PIN
+  pinMode(encoder2PinF, INPUT_PULLUP);
+  pinMode(encoder3PinG, INPUT_PULLUP); //ENCODER4 PIN
+  pinMode(encoder3PinH, INPUT_PULLUP);  
+  
+  attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoderA, CHANGE);//ENCODER1 PIN
+  attachInterrupt(digitalPinToInterrupt(encoder0PinB), doEncoderB, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(encoder1PinC), doEncoderC, CHANGE);//ENCODER2 PIN
+  attachInterrupt(digitalPinToInterrupt(encoder1PinD), doEncoderD, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(encoder2PinE), doEncoderE, CHANGE);//ENCODER3 PIN
+  attachInterrupt(digitalPinToInterrupt(encoder2PinF), doEncoderF, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(encoder3PinG), doEncoderG, CHANGE);//ENCODER4 PIN
+  attachInterrupt(digitalPinToInterrupt(encoder3PinH), doEncoderH, CHANGE);
+
+  Serial.begin(115200);
+}
+
+void loop(){
+    currentMillis = millis();
+
+    if (currentMillis - previousMillis >=10) {
+      previousMillis = currentMillis;
+      
+      Serial.print(encoder0Pos);
+      Serial.print(",");
+      Serial.print(encoder1Pos);
+      Serial.print(",");
+      Serial.print(encoder2Pos);
+      Serial.print(",");
+      Serial.println(encoder3Pos);
+    }
+
+}
+
+void doEncoderA(){
+  if (digitalRead(encoder0PinA) == HIGH ){
+    if (digitalRead(encoder0PinB) == LOW ){
+      encoder0Pos = encoder0Pos + 1;
+    }
+    else {
+      encoder0Pos = encoder0Pos - 1;
+    }
+  }
+  else {
+    if (digitalRead(encoder0PinB) == HIGH ){
+      encoder0Pos = encoder0Pos + 1;
+    }
+    else {
+      encoder0Pos = encoder0Pos - 1;
+    }
+  }
+}
+
+void doEncoderB(){
+  if (digitalRead(encoder0PinB) == HIGH ){
+    if (digitalRead(encoder0PinA) == HIGH){
+      encoder0Pos == encoder0Pos + 1;
+    }
+    else {
+      encoder0Pos = encoder0Pos - 1;
+    }
+  }
+  else {
+    if(digitalRead(encoder0PinA) == LOW){
+      encoder0Pos = encoder0Pos + 1;
+    }
+    else {
+      encoder0Pos = encoder0Pos - 1;
+    }
+  }
+}
+
+void doEncoderC(){
+  if (digitalRead(encoder1PinC) == HIGH ){
+    if (digitalRead(encoder1PinD) == LOW ){
+      encoder1Pos = encoder1Pos + 1;
+    }
+    else {
+      encoder1Pos = encoder1Pos - 1;
+    }
+  }
+  else {
+    if (digitalRead(encoder1PinD) == HIGH ){
+      encoder1Pos = encoder1Pos + 1;
+    }
+    else {
+      encoder1Pos = encoder1Pos - 1;
+    }
+  }
+}
+
+void doEncoderD(){
+  if (digitalRead(encoder1PinD) == HIGH ){
+    if (digitalRead(encoder1PinC) == HIGH){
+      encoder1Pos == encoder1Pos + 1;
+    }
+    else {
+      encoder1Pos = encoder1Pos - 1;
+    }
+  }
+  else {
+    if(digitalRead(encoder1PinC) == LOW){
+      encoder1Pos = encoder1Pos + 1;
+    }
+    else {
+      encoder1Pos = encoder1Pos - 1;
+    }
+  }
+}
+
+void doEncoderE(){
+  if (digitalRead(encoder2PinE) == HIGH ){
+    if (digitalRead(encoder2PinF) == LOW ){
+      encoder2Pos = encoder2Pos + 1;
+    }
+    else {
+      encoder2Pos = encoder2Pos - 1;
+    }
+  }
+  else {
+    if (digitalRead(encoder2PinF) == HIGH ){
+      encoder2Pos = encoder2Pos + 1;
+    }
+    else {
+      encoder2Pos = encoder2Pos - 1;
+    }
+  }
+}
+
+void doEncoderF(){
+  if (digitalRead(encoder2PinF) == HIGH ){
+    if (digitalRead(encoder2PinE) == HIGH){
+      encoder2Pos == encoder2Pos + 1;
+    }
+    else {
+      encoder2Pos = encoder2Pos - 1;
+    }
+  }
+  else {
+    if(digitalRead(encoder2PinE) == LOW){
+      encoder2Pos = encoder2Pos + 1;
+    }
+    else {
+      encoder2Pos = encoder2Pos - 1;
+    }
+  }
+}
+
+void doEncoderG(){
+  if (digitalRead(encoder3PinG) == HIGH ){
+    if (digitalRead(encoder3PinH) == LOW ){
+      encoder3Pos = encoder3Pos - 1;
+    }
+    else {
+      encoder3Pos = encoder3Pos + 1;
+    }
+  }
+  else {
+    if (digitalRead(encoder3PinH) == HIGH ){
+      encoder3Pos = encoder3Pos - 1;
+    }
+    else {
+      encoder3Pos = encoder3Pos + 1;
+    }
+  }
+}
+
+void doEncoderH(){
+  if (digitalRead(encoder3PinH) == HIGH ){
+    if (digitalRead(encoder3PinG) == HIGH){
+      encoder3Pos == encoder3Pos - 1;
+    }
+    else {
+      encoder3Pos = encoder3Pos + 1;
+    }
+  }
+  else {
+    if(digitalRead(encoder3PinG) == LOW){
+      encoder3Pos = encoder3Pos - 1;
+    }
+    else {
+      encoder3Pos = encoder3Pos + 1;
+    }
+  }
+}
