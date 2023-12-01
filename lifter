@@ -1,0 +1,38 @@
+const int relay_up = 12;
+const int relay_down = 9;
+
+void setup() {
+  pinMode(relay_up, OUTPUT);
+  pinMode(relay_down, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    int command = Serial.parseInt();
+
+    switch (command) {
+      case 1:
+        digitalWrite(relay_up, HIGH);
+        digitalWrite(relay_down, LOW);
+        Serial.println("Naik");
+        break;
+
+      case 2:
+        digitalWrite(relay_up, LOW);
+        digitalWrite(relay_down, HIGH);
+        Serial.println("Turun");
+        break;
+
+      case 3:
+        digitalWrite(relay_up, LOW);
+        digitalWrite(relay_down, LOW);
+        Serial.println("Stop");
+        break;
+
+      default:
+        Serial.println("Perintah tidak valid");
+        break;
+    }
+  }
+}
